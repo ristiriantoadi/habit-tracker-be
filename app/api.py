@@ -1,8 +1,10 @@
 from datetime import datetime
 
+import pytz
 from fastapi import FastAPI
 
-from config import db
+from controller.habit import getHabitsReminderTrue
+from controller.notification import isReminderTime, sendNotif
 
 app = FastAPI()
 
@@ -12,15 +14,10 @@ def read_root():
     return {"Hello": "World"}
 
 
-@app.post("/create")
-def create():
-    db.collection("persons").add({"name": "somebody", "createTime": datetime.utcnow()})
-
-
 @app.post("/send_notification")
 def get_data():
-    docs = db.collection("habits").get()
+    docs = getHabitsReminderTrue()
     for doc in docs:
-        print((doc.to_dict()["name"]))
-        print((doc.to_dict()["createTime"].year))
-        print("")
+        currentTime = datetime.now(pytz.timezone(doc.to_dict()["reminder"]["timezone"]))
+        if isReminderTime(currentTime=currentTime, habit=doc.to_dict()) is True:
+            sendNotif(doc.to_dict())
