@@ -4,7 +4,7 @@ import pytz
 from fastapi import FastAPI
 
 from controller.habit import getHabitsReminderTrue
-from controller.notification import isReminderTime, sendNotif
+from controller.notification import sendNotif, sendReminder
 
 app = FastAPI()
 
@@ -19,5 +19,5 @@ def get_data():
     docs = getHabitsReminderTrue()
     for doc in docs:
         currentTime = datetime.now(pytz.timezone(doc.to_dict()["reminder"]["timezone"]))
-        if isReminderTime(currentTime=currentTime, habit=doc.to_dict()) is True:
+        if sendReminder(currentTime=currentTime, habit=doc.to_dict()) is True:
             sendNotif(doc.to_dict())

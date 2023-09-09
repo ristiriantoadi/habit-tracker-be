@@ -3,7 +3,10 @@ from datetime import datetime
 from config import db
 
 
-def isReminderTime(currentTime: datetime, habit: dict):
+def sendReminder(currentTime: datetime, habit: dict):
+    if "isDone" in habit:
+        if habit["isDone"] == True:
+            return False
     currentHour = currentTime.hour
     currentMinute = currentTime.minute
     reminderHour = int(habit["reminder"]["secondSinceMidnight"] / 3600)
@@ -21,6 +24,6 @@ def sendNotif(habit: dict):
             "text": "Dont forget to do {habitName} today".format(
                 habitName=habit["name"]
             ),
-            "status": "UNREAD",
+            "isRead": False,
         }
     )
