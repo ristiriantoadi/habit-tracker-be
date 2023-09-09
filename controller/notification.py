@@ -21,5 +21,6 @@ def sendNotif(habit: dict):
             "text": "Dont forget to do {habitName} today".format(
                 habitName=habit["name"]
             ),
+            "status": "UNREAD",
         }
     )
