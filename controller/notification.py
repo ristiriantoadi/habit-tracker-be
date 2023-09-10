@@ -21,9 +21,7 @@ def sendNotif(habit: dict):
         {
             "userId": habit["userId"],
             "createTime": datetime.utcnow(),
-            "text": "Dont forget to do <b>{habitName}</b> today!".format(
-                habitName=habit["name"]
-            ),
+            "habitName": habit["name"],
             "isRead": False,
         }
     )
