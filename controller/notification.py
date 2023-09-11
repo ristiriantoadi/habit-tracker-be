@@ -1,5 +1,7 @@
 from datetime import datetime
 
+from firebase_admin import messaging
+
 from config import db
 
 
@@ -25,3 +27,15 @@ def sendNotif(habit: dict):
             "isRead": False,
         }
     )
+    result = db.collection("tokens").document(habit["userId"]).get()
+    if result.exists is False:
+        return
+    token = result.to_dict()["token"]
+    message = messaging.Message(
+        notification=messaging.Notification(
+            title="Do your habit",
+            body="Dont forget to do {habit} today!".format(habit=habit["name"]),
+        ),
+        token=token,
+    )
+    messaging.send(message)
