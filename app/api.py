@@ -29,6 +29,9 @@ def test_send_firebase_notif():
     message = messaging.Message(
         notification=messaging.Notification(title="test", body="something wicked"),
         token="cy5dZZqKtXi8JDHD7sk2s4:APA91bHigcp9kTAdYG3xPGai0vk_E65N-olrH_bgof89pc7js9qeUoz4wE7EoPLorJaDuPlOSAlJ8YBJw8vY-YOswHDu6agzeCLhvivL1Mo_Ua-pzVf1KsKmygCcFdsm6JgOInoaybEv",
+        webpush=messaging.WebpushConfig(
+            fcm_options=messaging.WebpushFCMOptions(link="https://google.com")
+        ),
     )
     response = messaging.send(message)
     # Response is a message ID string.

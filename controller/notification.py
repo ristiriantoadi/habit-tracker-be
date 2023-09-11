@@ -37,5 +37,10 @@ def sendNotif(habit: dict):
             body="Dont forget to do {habit} today!".format(habit=habit["name"]),
         ),
         token=token,
+        webpush=messaging.WebpushConfig(
+            fcm_options=messaging.WebpushFCMOptions(
+                link="https://grand-boba-389867.netlify.app"
+            )
+        ),
     )
     messaging.send(message)
